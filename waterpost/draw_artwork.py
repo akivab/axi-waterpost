@@ -54,11 +54,11 @@ def draw_artwork(artworkData, opts=DefaultOpts):
     path_idx = 0
     current_paths = []
     last_brush_color = 0
+    opts.addToSurface = True
     while path_idx < len(drawing.paths):
         if path_idx in color_breaks:
             if len(current_paths):
-                pdb.set_trace()
-                surface = render_drawing(axi.Drawing(current_paths), colorTag=last_brush_color, opts=opts)
+                render_drawing(axi.Drawing(current_paths), colorTag=last_brush_color, opts=opts)
             current_paths = [drawing.paths[path_idx]]
             last_brush_color = color_breaks[path_idx][0]
             colors.color_brush(color_breaks[path_idx][0], color_breaks[path_idx][1], opts=opts)

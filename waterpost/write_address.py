@@ -3,7 +3,7 @@ import sys
 import json
 from unidecode import unidecode
 
-from WaterpostOptions import DefaultOpts
+from WaterpostOptions import DefaultOpts, WaterpostOptions
 from drawing_util import render_drawing
 
 

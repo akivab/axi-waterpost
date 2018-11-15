@@ -1,27 +1,9 @@
-import tempfile
-
 import firebase_admin
 from firebase_admin import credentials, storage, db
 import requests
-import draw_artwork
 import json
 
-from WaterpostOptions import WaterpostOptions
-import draw_signature, write_message, write_address
-
-
-def generate_artwork_from_json(json_file):
-    front_of_card = tempfile.NamedTemporaryFile(suffix=".png").name
-    options = WaterpostOptions(renderPath=front_of_card, shouldExecuteInstructions=False, debug=False)
-    draw_artwork.draw_artwork(json_file, opts=options)
-
-    back_of_card = tempfile.NamedTemporaryFile(suffix=".png").name
-    options = WaterpostOptions(renderPath=None, shouldExecuteInstructions=False, debug=False)
-    options.surface = draw_signature.draw_signature(json_file, options)
-    options.surface = write_message.write_message(json_file, options)
-    options.renderPath = back_of_card
-    write_address.write_address(json_file, options)
-    print 'saved in {}, {}'.format(front_of_card, back_of_card)
+from image_generator import generate_artwork_from_json
 
 
 def process_post(post_key):
