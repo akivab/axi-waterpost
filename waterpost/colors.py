@@ -1,4 +1,5 @@
 import axi
+from WaterpostOptions import WaterpostOptions, DefaultOpts
 
 GREEN = (10, 0.5)
 YELLOW = (10, 2.25)
@@ -8,17 +9,19 @@ BLACK = (11.5, 2.25)
 WATER = (11.5, 4)
 
 COLOR_ORDER = [GREEN, RED, BLUE, YELLOW, BLACK]
-COLOR_RGB = [(0,1,0),(1,0,0),(0,0,1), (1,1,0),(0, 0, 0)]
+COLOR_RGB = [(0, 1, 0), (1, 0, 0), (0, 0, 1), (1, 1, 0), (0, 0, 0)]
 
-should_color_brush = True
-def color_brush(tagName, dipInWater=True):
+
+def color_brush(tagName, dipInWater=True, opts=DefaultOpts):
     """
-
+    :type tagName: int
+    :type dipInWater: bool
+    :type opts: WaterpostOptions
     :param tagName: the name of the color (see color order)
     :param dipInWater: whether to dip brush in water before painting
     :return: None
     """
-    if not should_color_brush:
+    if not opts.shouldExecuteInstructions:
         return
     if tagName < 0 or tagName >= len(COLOR_ORDER):
         raise Exception('tag name bad: ', tagName)
@@ -38,4 +41,3 @@ def color_brush(tagName, dipInWater=True):
 
     device.pen_up()
     device.home()
-

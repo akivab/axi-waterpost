@@ -5,9 +5,9 @@ import threading
 import tempfile
 
 
-class VideoRecording():
+class VideoCapture():
     def __init__(self):
-        self.maxRecordingTime = 10
+        self.maxRecordingTime = 60
         self.cap = None
         self.start_time = None
         self.thread = None
@@ -43,7 +43,8 @@ class VideoRecording():
             print 'not recording a video'
             return
         self.shouldStopRecording = True
-        print "saved to file {}".format(self.temporaryFile)
+        print "saved to fileth {}".format(self.temporaryFile)
+        self.thread.join()
 
     def run(self):
         while not self.shouldStopRecording:
@@ -52,12 +53,15 @@ class VideoRecording():
                 self.vout.write(frame)
             else:
                 break
-            self.shouldStopRecording = (self.cap.isOpened() and time.time() - self.start_time < self.maxRecordingTime)
+            if not (self.cap.isOpened() and time.time() - self.start_time < self.maxRecordingTime):
+                self.shouldStopRecording = True
         self.cap.release()
         self.vout.release()
         cv2.destroyAllWindows()
 
-vid = VideoRecording()
-vid.start_recording()
-if raw_input():
-    vid.stop_recording()
+
+if __name__ == '__main__':
+    vid = VideoCapture()
+    vid.start_recording()
+    if raw_input():
+        vid.stop_recording()
