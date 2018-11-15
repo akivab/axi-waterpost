@@ -27,7 +27,7 @@ def draw_signature(artworkData, opts=DefaultOpts):
     drawing = drawing.scale_to_fit(3, 1)
     height = get_message_height(artworkData)
     drawing = drawing.translate(0.5, height + 0.5)
-    return render_drawing(drawing, opts=opts)
+    render_drawing(drawing, opts=opts)
 
 
 if __name__ == '__main__':

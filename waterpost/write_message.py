@@ -13,7 +13,7 @@ def write_message(artworkData, opts=DefaultOpts):
     :type artworkData: dict
     :type opts: WaterpostOptions
     """
-    return render_drawing(get_message_drawing(artworkData), opts=opts)
+    render_drawing(get_message_drawing(artworkData), opts=opts)
 
 
 def get_message_drawing(artworkData, opts=DefaultOpts):

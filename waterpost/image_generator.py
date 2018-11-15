@@ -5,14 +5,14 @@ import sys
 import json
 
 
-def generate_artwork_from_json(json_file, use_html=True):
-    suffix = ".html" if use_html else ".png"
+def generate_artwork_from_json(json_file):
+    suffix = ".png"
     front_of_card = tempfile.NamedTemporaryFile(suffix=suffix).name
-    options = WaterpostOptions(renderPath=front_of_card, useHtml=use_html, shouldExecuteInstructions=False, debug=False)
+    options = WaterpostOptions(renderPath=front_of_card, shouldExecuteInstructions=False, debug=False)
     draw_artwork.draw_artwork(json_file, opts=options)
 
     back_of_card = tempfile.NamedTemporaryFile(suffix=suffix).name
-    options = WaterpostOptions(renderPath=None, useHtml=use_html, shouldExecuteInstructions=False, debug=False)
+    options = WaterpostOptions(renderPath=None, shouldExecuteInstructions=False, debug=False)
     options.addToSurface = True
     draw_signature.draw_signature(json_file, options)
     write_message.write_message(json_file, options)

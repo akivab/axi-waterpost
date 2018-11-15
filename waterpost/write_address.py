@@ -25,7 +25,7 @@ def write_address(artworkData, opts=DefaultOpts):
             paths += d.paths
         y += 0.5
     drawing = axi.Drawing(paths)
-    return render_drawing(drawing, opts=opts)
+    render_drawing(drawing, opts=opts)
 
 
 if __name__ == '__main__':
