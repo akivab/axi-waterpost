@@ -1,5 +1,4 @@
 import datetime
-import pdb
 import tempfile
 import time
 
@@ -149,7 +148,6 @@ class PostcardPrinter:
 
         :type currentPostcard: PostcardData
         """
-        pdb.set_trace()
         self.set_printer_state(PrinterState.WRITING_BACK)
         videoCapture = capture_video.VideoCapture()
         videoCapture.start_recording()
