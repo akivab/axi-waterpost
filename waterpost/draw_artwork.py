@@ -20,6 +20,7 @@ def draw_artwork(artworkData, opts=DefaultOpts):
     :type artworkData: dict
     :type opts: WaterpostOptions
     """
+    opts.dbg('drawing artwork')
     artwork = artworkData['artwork']
     rot = artworkData['artwork_rot'] if 'artwork_rot' in artworkData else 0
     turtle = axi.Turtle()

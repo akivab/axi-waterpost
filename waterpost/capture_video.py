@@ -3,6 +3,7 @@ import time
 import cv2
 import threading
 import tempfile
+from subprocess import call
 
 
 class VideoCapture():
@@ -12,6 +13,7 @@ class VideoCapture():
         self.start_time = None
         self.thread = None
         self.vout = None
+        self.largeVideoFile = None
         self.temporaryFile = None
         self.shouldStopRecording = False
 
@@ -28,9 +30,9 @@ class VideoCapture():
         size = (int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
                 int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
 
-        self.temporaryFile = tempfile.NamedTemporaryFile(suffix=".mp4").name
+        self.largeVideoFile = tempfile.NamedTemporaryFile(suffix=".mp4").name
 
-        success = self.vout.open(self.temporaryFile, fourcc, 30.0, size, True)
+        success = self.vout.open(self.largeVideoFile, fourcc, 30.0, size, True)
         if not success:
             print 'couldn\'t open file'
             return -1
@@ -43,8 +45,11 @@ class VideoCapture():
             print 'not recording a video'
             return
         self.shouldStopRecording = True
-        print "saved to fileth {}".format(self.temporaryFile)
         self.thread.join()
+        if not self.temporaryFile:
+            print 'error compressing video!'
+        else:
+            print "saved to file to {}".format(self.temporaryFile)
 
     def run(self):
         while not self.shouldStopRecording:
@@ -55,9 +60,12 @@ class VideoCapture():
                 break
             if not (self.cap.isOpened() and time.time() - self.start_time < self.maxRecordingTime):
                 self.shouldStopRecording = True
+        compressedFile = tempfile.NamedTemporaryFile(suffix=".mp4").name
         self.cap.release()
         self.vout.release()
         cv2.destroyAllWindows()
+        call(['ffmpeg', '-i', self.largeVideoFile, '-filter:v', 'scale=420:-1', compressedFile])
+        self.temporaryFile = compressedFile
 
 
 if __name__ == '__main__':

@@ -13,6 +13,7 @@ def write_address(artworkData, opts=DefaultOpts):
     :type artworkData: dict
     :type opts: WaterpostOptions
     """
+    opts.dbg('writing address')
     address = artworkData['address']
     font = axi.Font(axi.FUTURAL, 14)
     y = 2.175
@@ -24,8 +25,8 @@ def write_address(artworkData, opts=DefaultOpts):
             d = d.translate(4.25, y)
             paths += d.paths
         y += 0.5
-    drawing = axi.Drawing(paths)
-    render_drawing(drawing, opts=opts)
+    if len(paths):
+        render_drawing(axi.Drawing(paths), opts=opts)
 
 
 if __name__ == '__main__':

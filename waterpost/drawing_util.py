@@ -12,7 +12,8 @@ def render_drawing(drawing, colorTag=-1, opts=DefaultOpts):
     :type opts: WaterpostOptions
     :returns cairo.ImageSurface
     """
-    opts.surface = drawing.render(bounds=opts.bounds, rgb=colors.COLOR_RGB[colorTag], surface=opts.surface)
+    if opts and not opts.shouldExecuteInstructions:
+        opts.surface = drawing.render(bounds=opts.bounds, rgb=colors.COLOR_RGB[colorTag], surface=opts.surface)
     if opts and opts.renderPath and opts.surface:
             opts.surface.write_to_png(opts.renderPath)
     if opts and opts.shouldExecuteInstructions:

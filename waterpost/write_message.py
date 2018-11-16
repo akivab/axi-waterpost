@@ -13,7 +13,10 @@ def write_message(artworkData, opts=DefaultOpts):
     :type artworkData: dict
     :type opts: WaterpostOptions
     """
-    render_drawing(get_message_drawing(artworkData), opts=opts)
+    opts.dbg('writing message')
+    drawing = get_message_drawing(artworkData)
+    if drawing:
+        render_drawing(drawing, opts=opts)
 
 
 def get_message_drawing(artworkData, opts=DefaultOpts):
@@ -24,7 +27,7 @@ def get_message_drawing(artworkData, opts=DefaultOpts):
     """
     message = unidecode(artworkData['message'])
     if len(message) == 0:
-        return axi.Drawing([])
+        return None
     opts.dbg('writing', message)
     font = axi.Font(axi.FUTURAL, 16)
     drawing = font.wrap(message, 2.5)
@@ -34,7 +37,10 @@ def get_message_drawing(artworkData, opts=DefaultOpts):
 
 
 def get_message_height(artworkData):
-    return get_message_drawing(artworkData).height + 0.5
+    drawing = get_message_drawing(artworkData)
+    if drawing:
+        return drawing.height + 0.5
+    return 0
 
 
 if __name__ == '__main__':

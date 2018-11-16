@@ -8,7 +8,7 @@ class WaterpostOptions:
     debug = True  # type: bool
     bounds = (0, 0, 7, 5)
 
-    def __init__(self, renderPath=None, surface=None, shouldExecuteInstructions=True, debug=False):
+    def __init__(self, renderPath=None, surface=None, shouldExecuteInstructions=True, debug=True):
         self.renderPath = renderPath
         self.surface = surface
         self.shouldExecuteInstructions = shouldExecuteInstructions
@@ -16,7 +16,8 @@ class WaterpostOptions:
 
     def dbg(self, *args):
         if self.debug:
-            print args
-
+            for arg in args:
+                print arg,
+        print
 
 DefaultOpts = WaterpostOptions()
