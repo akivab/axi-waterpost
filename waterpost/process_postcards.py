@@ -6,14 +6,13 @@ import time
 import json
 import firebase_admin
 import requests
-from firebase_admin import credentials, db, storage
+from firebase_admin import credentials, db, storage, messaging
 
 import capture_video
 import draw_artwork
 import draw_signature
 import write_address
 import write_message
-
 
 class PostcardState:
     START = 0
@@ -196,9 +195,10 @@ class PostcardPrinter:
 
 
 class PostcardProcessor:
-    def __init__(self):
+    def __init__(self, operatorData):
         self.currentPostcard = None
         self.postcardPrinter = PostcardPrinter()
+        self.operatorData = operatorData
 
     def run(self):
         queue = []
@@ -215,6 +215,7 @@ class PostcardProcessor:
                     time.sleep(10)
                     continue
             card_id = queue[0]  # type: str
+            self.send_operator_message('Get your pen ready!', 'Card {}... being processed'.format(card_id[:6]))
             card = PostcardData(card_id)
             self.postcardPrinter.print_card(card)
             if card.postcardState == PostcardState.FINISH:
@@ -223,12 +224,30 @@ class PostcardProcessor:
             if len(queue) == 0:
                 time.sleep(10)
 
+    def send_operator_message(self, title, body):
+        registration_token = self.operatorData['token']
+
+        # See documentation on defining a message payload.
+        message = messaging.Message(
+            notification=messaging.Notification(
+                title=title,
+                body=body,
+            ),
+            token=registration_token,
+        )
+
+        # Send a message to the device corresponding to the provided
+        # registration token.
+        response = messaging.send(message)
+        # Response is a message ID string.
+        print('Successfully sent message:', response)
+
 
 if __name__ == '__main__':
     # Initialize the default app
-
+    operatorData = json.loads(open('operator.json','r').read())
     cred = credentials.Certificate('credentials.json')
     default_app = firebase_admin.initialize_app(cred, {'databaseURL': 'https://beaming-surfer-222116.firebaseio.com'})
 
-    processor = PostcardProcessor()
+    processor = PostcardProcessor(operatorData)
     processor.run()

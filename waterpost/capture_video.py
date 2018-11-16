@@ -64,7 +64,7 @@ class VideoCapture():
         self.cap.release()
         self.vout.release()
         cv2.destroyAllWindows()
-        call(['ffmpeg', '-i', self.largeVideoFile, '-filter:v', 'scale=420:-1', compressedFile])
+        call(['ffmpeg', '-i', self.largeVideoFile, '-filter:v', 'scale=420:-1,setpts=0.25*PTS', compressedFile])
         self.temporaryFile = compressedFile
 
 
