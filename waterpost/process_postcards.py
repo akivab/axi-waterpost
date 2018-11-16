@@ -102,14 +102,15 @@ class PostcardPrinter:
 
     def set_printer_state(self, newStatus):
         self.status = newStatus
-        ref = db.reference().child("printerState")
+        ref = db.reference().child("printer").child("state")
         ref.set(self.status)
         time.sleep(1)
         while ref.get() != self.status:
             time.sleep(1)
 
     def update_printer_state(self):
-        self.status = db.reference().child("printerState").get()
+        ref = db.reference().child("printer").child("state")
+        self.status = ref.get()
 
     def print_card(self, currentPostcard):
         print 'printing card {} of status {}'.format(currentPostcard.postcardId, currentPostcard.postcardState)
