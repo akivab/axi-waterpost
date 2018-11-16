@@ -215,8 +215,8 @@ class PostcardProcessor:
                     time.sleep(10)
                     continue
             card_id = queue[0]  # type: str
-            self.send_operator_message('Get your pen ready!', 'Card {}... being processed'.format(card_id[:6]))
             card = PostcardData(card_id)
+            self.send_operator_message('Get your pen ready!', 'Card ready to print')
             self.postcardPrinter.print_card(card)
             if card.postcardState == PostcardState.FINISH:
                 card.make_sure_status_gets_set()
