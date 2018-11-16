@@ -43,6 +43,7 @@ def draw_artwork(artworkData, opts=DefaultOpts):
         if arg == 'color':
             opts.dbg('changing color to ', line[1])
             color_breaks[len(turtle.drawing.paths)] = (line[1], True)
+            last_color_tag = line[1]
         if arg == 'circle':
             opts.dbg('circle', line[1], line[2])
             turtle.circle(line[1], line[2], steps=90)
