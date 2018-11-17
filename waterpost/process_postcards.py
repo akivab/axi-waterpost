@@ -13,6 +13,23 @@ import draw_signature
 import write_address
 import write_message
 
+
+def send_message(token, title, body):
+    # See documentation on defining a message payload.
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title=title,
+            body=body,
+        ),
+        token=token,
+    )
+
+    # Send a message to the device corresponding to the provided
+    # registration token.
+    response = messaging.send(message)
+    # Response is a message ID string.
+    print('Successfully sent message:', response)
+
 class PostcardState:
     START = 0
     PRINTING_BACK = 1
@@ -39,6 +56,10 @@ class PostcardData:
         self.axiInstructionFile.write(instructions)
         self.axiInstructionFile.close()
         self.postcardState = int(self.postcardData['status'])
+        self.userToken = db.reference().child('users').child(self.postcardData['uid']).child('token').get()
+        self.artworkName = self.postcardData['name']
+        print 'sent to user ', self.userToken
+        send_message(self.userToken, 'printing card', 'printing card from {}'.format(self.artworkName))
 
 
     @classmethod
@@ -61,11 +82,15 @@ class PostcardData:
         self.postcardState = PostcardState.UPLOADED_BACK_VID
         self.get_db_reference().child('back_video').set(signed_url)
         self.make_sure_status_gets_set()
+        if self.userToken:
+            send_message(self.userToken, 'Halfway done!', 'Finished pen work for card from {}'.format(self.artworkName))
 
     def set_front_of_card_video_finished(self, signed_url):
         self.postcardState = PostcardState.FINISH
         self.get_db_reference().child('front_video').set(signed_url)
         self.make_sure_status_gets_set()
+        if self.userToken:
+            send_message(self.userToken, 'Finished with card!', 'Artwork complete for card from {}, take a look!'.format(self.artworkName))
 
     def upload_blob_for_front(self):
         return PostcardData.upload_blob_for_video_with_name(self.postcardId, 'front')
@@ -202,8 +227,11 @@ class PostcardProcessor:
     def run(self):
         queue = []
         queueRef = db.reference().child("queue")
+        self.send_operator_message('Get your pen ready!', 'Card ready to print')
         while True:
             print 'updating queue'
+            millis = int(round(time.time() * 1000))
+            db.reference().child('printer').child('ping').set(millis)
             while queue == None or len(queue) == 0:
                 queueMap = queueRef.order_by_value().end_at(PostcardState.UPLOADED_BACK_VID).get()  # type: dict
                 queue = queueMap.keys()
@@ -216,7 +244,6 @@ class PostcardProcessor:
                     continue
             card_id = queue[0]  # type: str
             card = PostcardData(card_id)
-            self.send_operator_message('Get your pen ready!', 'Card ready to print')
             self.postcardPrinter.print_card(card)
             if card.postcardState == PostcardState.FINISH:
                 card.make_sure_status_gets_set()
@@ -226,22 +253,8 @@ class PostcardProcessor:
                 time.sleep(10)
 
     def send_operator_message(self, title, body):
-        registration_token = self.operatorData['token']
+        send_message(self.operatorData['token'], title, body)
 
-        # See documentation on defining a message payload.
-        message = messaging.Message(
-            notification=messaging.Notification(
-                title=title,
-                body=body,
-            ),
-            token=registration_token,
-        )
-
-        # Send a message to the device corresponding to the provided
-        # registration token.
-        response = messaging.send(message)
-        # Response is a message ID string.
-        print('Successfully sent message:', response)
 
 
 if __name__ == '__main__':

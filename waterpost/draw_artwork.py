@@ -8,8 +8,8 @@ from drawing_util import render_drawing
 from WaterpostOptions import WaterpostOptions, DefaultOpts
 
 FULL_PAPER_BOUNDS = (8, 8)
-POSTCARD_BOUNDS = (5, 4)
-POSTCARD_CENTER = (6.5, 5)
+POSTCARD_BOUNDS = (6.5, 4.5)
+POSTCARD_CENTER = (7, 5)
 BOUNDS = POSTCARD_BOUNDS
 CENTER = POSTCARD_CENTER
 

@@ -25,9 +25,9 @@ def draw_signature(artworkData, opts=DefaultOpts):
         if arg == 'color':
             opts.dbg('changing color to ', line[1])
     drawing = turtle.drawing.rotate(-90)
-    drawing = drawing.scale_to_fit(3, 1)
+    drawing = drawing.scale_to_fit(2.5, 0.8)
     height = get_message_height(artworkData)
-    drawing = drawing.translate(0.5, height + 0.5)
+    drawing = drawing.translate(1.0, height + 0.5)
     render_drawing(drawing, opts=opts)
 
 
