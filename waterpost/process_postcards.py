@@ -201,10 +201,11 @@ class PostcardProcessor:
 
     def run(self):
         queue = []
+        queueRef = db.reference().child("queue")
         while True:
             print 'updating queue'
             while queue == None or len(queue) == 0:
-                queueMap = db.reference().child("queue").order_by_value().end_at(PostcardState.UPLOADED_BACK_VID).get()  # type: dict
+                queueMap = queueRef.order_by_value().end_at(PostcardState.UPLOADED_BACK_VID).get()  # type: dict
                 queue = queueMap.keys()
                 # check to be sure
                 for key in queue:
@@ -219,6 +220,7 @@ class PostcardProcessor:
             self.postcardPrinter.print_card(card)
             if card.postcardState == PostcardState.FINISH:
                 card.make_sure_status_gets_set()
+                queueRef.child(card_id).delete()
                 queue.remove(card_id)
             if len(queue) == 0:
                 time.sleep(10)
