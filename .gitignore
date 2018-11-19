@@ -3,3 +3,4 @@ venv/
 .idea/
 testdata/
 output/
+.DS_Store

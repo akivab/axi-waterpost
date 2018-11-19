@@ -21,3 +21,4 @@ class WaterpostOptions:
         print
 
 DefaultOpts = WaterpostOptions()
+SaveImageOpts = WaterpostOptions('/tmp/rendering.png', shouldExecuteInstructions=False, debug=False)
