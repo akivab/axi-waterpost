@@ -20,9 +20,7 @@ def draw_artwork(artworkData, opts=DefaultOpts):
     :type artworkData: dict
     :type opts: WaterpostOptions
     """
-    opts.dbg('drawing artwork')
     artwork = artworkData['artwork']
-    rot = artworkData['artwork_rot'] if 'artwork_rot' in artworkData else 0
     turtle = axi.Turtle()
     color_breaks = {}
     last_color_tag = -1
@@ -43,32 +41,31 @@ def draw_artwork(artworkData, opts=DefaultOpts):
         if arg == 'color':
             opts.dbg('changing color to ', line[1])
             color_breaks[len(turtle.drawing.paths)] = (line[1], True)
-            last_color_tag = line[1]
         if arg == 'circle':
             opts.dbg('circle', line[1], line[2])
             turtle.circle(line[1], line[2], steps=90)
         if arg == 'forward':
             opts.dbg('forward', line[1])
             turtle.forward(line[1])
-    drawing = turtle.drawing.rotate(-90 * rot).scale_to_fit(*BOUNDS)
+    drawing = turtle.drawing.scale_to_fit(*BOUNDS)
     drawing = drawing.center(*CENTER)
 
     path_idx = 0
     current_paths = []
     last_brush_color = 0
-    opts.addToSurface = True
+    opts.useBrush = True
     while path_idx < len(drawing.paths):
         if path_idx in color_breaks:
             if len(current_paths):
                 render_drawing(axi.Drawing(current_paths), colorTag=last_brush_color, opts=opts)
             current_paths = [drawing.paths[path_idx]]
+            colors.color_brush(color_breaks[path_idx][0], lastColorTagName=last_brush_color, dipInWater=color_breaks[path_idx][1], opts=opts)
             last_brush_color = color_breaks[path_idx][0]
-            colors.color_brush(color_breaks[path_idx][0], color_breaks[path_idx][1], opts=opts)
             turtle.penup()
         else:
             current_paths += [drawing.paths[path_idx]]
         path_idx += 1
-    return render_drawing(axi.Drawing(current_paths), colorTag=last_brush_color, opts=opts)
+    render_drawing(axi.Drawing(current_paths), colorTag=last_brush_color, opts=opts)
 
 
 if __name__ == '__main__':

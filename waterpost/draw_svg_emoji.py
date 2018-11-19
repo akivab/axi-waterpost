@@ -31,7 +31,7 @@ def draw_svg(svgFilename, opts=DefaultOpts):
     for path in drawing.paths:
         colors.color_brush(colorIdx, opts=opts)
         drawing_util.render_drawing(axi.Drawing(path), opts=opts)
-        colorIdx = (colorIdx + 1) % len(colors.COLOR_ORDER)
+        colorIdx = (colorIdx + 1) % len(colors.COLORS)
 
 if __name__ == '__main__':
     # if len(sys.argv) != 3:
