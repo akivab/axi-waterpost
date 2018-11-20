@@ -50,6 +50,7 @@ def color_brush(tagName, lastColorTagName=0, dipInWater=True, opts=DefaultOpts):
     :return: None
     """
     if not opts.shouldExecuteInstructions:
+        print 'Coloring brush {}'.format(tagName)
         return
     if tagName < 0 or tagName >= len(COLORS):
         raise Exception('tag name bad: ', tagName)
