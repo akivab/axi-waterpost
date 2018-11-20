@@ -9,7 +9,7 @@ from subprocess import call
 VIDEO_CAMERA = 0
 class VideoCapture():
     def __init__(self):
-        self.maxRecordingTime = 60
+        self.maxRecordingTime = 60 * 5
         self.cap = None
         self.start_time = None
         self.thread = None
