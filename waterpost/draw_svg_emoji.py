@@ -1,3 +1,4 @@
+import sys
 import axi
 import pdb
 from xml.dom import minidom
@@ -27,15 +28,16 @@ def draw_svg(svgFilename, opts=DefaultOpts):
         paths += [curr]
     drawing = axi.Drawing(paths).scale_to_fit(6.5, 4.5)
     drawing = drawing.center(7, 5)
-    colorIdx = 0
+    i = 0
     for path in drawing.paths:
-        colors.color_brush(colorIdx, opts=opts)
-        drawing_util.render_drawing(axi.Drawing(path), opts=opts)
-        colorIdx = (colorIdx + 1) % len(colors.COLORS)
+      colors.color_brush(7)
+      i += 1
+      drawing_util.render_drawing(axi.Drawing([path]), opts=opts)
 
 if __name__ == '__main__':
-    # if len(sys.argv) != 3:
-    #     print 'usage: draw_svg_emoji '
-    #     exit()
-    # emoji_code = sys.argv[1]
-    draw_svg('u1F30E.svg', opts=DefaultOpts)
+    if len(sys.argv) != 2:
+        print 'usage: draw_svg_emoji '
+        exit()
+    emoji_code = sys.argv[1]
+
+    draw_svg(emoji_code, opts=DefaultOpts)

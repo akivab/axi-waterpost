@@ -6,7 +6,7 @@ import tempfile
 from subprocess import call
 
 
-VIDEO_CAMERA = 1
+VIDEO_CAMERA = 0
 class VideoCapture():
     def __init__(self):
         self.maxRecordingTime = 60
@@ -28,9 +28,7 @@ class VideoCapture():
         self.cap = cv2.VideoCapture(VIDEO_CAMERA)
         fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
         self.vout = cv2.VideoWriter()
-        size = (int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
-                int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-
+        size = (int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
         self.largeVideoFile = tempfile.NamedTemporaryFile(suffix=".mp4").name
         success = self.vout.open(self.largeVideoFile, fourcc, 30.0, size, True)
         if not success:
@@ -64,7 +62,7 @@ class VideoCapture():
         self.cap.release()
         self.vout.release()
         cv2.destroyAllWindows()
-        call(['ffmpeg', '-i', self.largeVideoFile, '-filter:v', 'scale=420:-1,setpts=0.5*PTS', compressedFile])
+        call(['ffmpeg', '-i', self.largeVideoFile, '-filter:v', 'scale=420:360,setpts=0.5*PTS', compressedFile])
         self.temporaryFile = compressedFile
 
 if __name__ == '__main__':

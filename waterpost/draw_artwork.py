@@ -40,6 +40,7 @@ def draw_artwork(artworkData, opts=DefaultOpts):
             turtle.goto(line[1], line[2])
         if arg == 'color':
             opts.dbg('changing color to ', line[1])
+            last_color_tag = line[1]
             color_breaks[len(turtle.drawing.paths)] = (line[1], True)
         if arg == 'circle':
             opts.dbg('circle', line[1], line[2])
@@ -49,10 +50,10 @@ def draw_artwork(artworkData, opts=DefaultOpts):
             turtle.forward(line[1])
     drawing = turtle.drawing.scale_to_fit(*BOUNDS)
     drawing = drawing.center(*CENTER)
-
     path_idx = 0
     current_paths = []
     last_brush_color = 0
+    total_path_length = 0
     opts.useBrush = True
     while path_idx < len(drawing.paths):
         if path_idx in color_breaks:
