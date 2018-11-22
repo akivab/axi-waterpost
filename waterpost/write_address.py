@@ -21,8 +21,8 @@ def write_address(artworkData, opts=DefaultOpts):
     for line in address:
         if len(line) != 0:
             opts.dbg('writing', line)
-            d = font.wrap(unidecode(line), 3, 0.5, justify=True)  # type: axi.Drawing
-            d = d.translate(4.25, y)
+            d = font.wrap(unidecode(line), 3.25, 0.5, justify=True)  # type: axi.Drawing
+            d = d.translate(3.75, y)
             paths += d.paths
         y += 0.5
     if len(paths):

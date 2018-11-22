@@ -30,7 +30,7 @@ def get_message_drawing(artworkData, opts=DefaultOpts):
         return None
     opts.dbg('writing', message)
     font = axi.Font(axi.FUTURAL, 16)
-    drawing = font.wrap(message, 2.5)
+    drawing = font.wrap(message, 3)
     drawing = drawing.translate(0.5, 0.5)
     drawing = drawing.remove_paths_outside(3.5, 3.5)
     return drawing
