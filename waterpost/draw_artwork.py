@@ -12,7 +12,7 @@ POSTCARD_BOUNDS = (6.5, 4.5)
 POSTCARD_CENTER = (7, 5)
 BOUNDS = POSTCARD_BOUNDS
 CENTER = POSTCARD_CENTER
-MIN_REBRUSH = 5 # 5 Inches per color
+MIN_REBRUSH = 10 # 5 Inches per color
 
 def draw_artwork(artworkData, opts=DefaultOpts):
     """
