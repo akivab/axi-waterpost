@@ -40,6 +40,9 @@ WATERS = {
     Color.DARK_COLORS: (COLORS_ROW_1, COLORS_COL_6)
 }
 
+START_CLEAR = (7, 0)
+END_CLEAR = (7, 7)
+
 def color_brush(tagName, lastColorTagName=0, dipInWater=True, opts=DefaultOpts):
     """
     :type tagName: int
@@ -60,8 +63,15 @@ def color_brush(tagName, lastColorTagName=0, dipInWater=True, opts=DefaultOpts):
     turtle = axi.Turtle()
     turtle.circle(0.1, 360 * 5, steps=90)
 
+    colorGroup = COLORS[lastColorTagName].colorGroup
+    if colorGroup == Color.DARK_COLORS:
+        for i in xrange(2):
+          device.goto(*START_CLEAR)
+          device.pen_down()
+          device.goto(*END_CLEAR)
+        device.pen_up()
     if dipInWater:
-        water = WATERS[COLORS[lastColorTagName].colorGroup]
+        water = WATERS[colorGroup]
         device.goto(*water)
         axi.draw(turtle.drawing)
 

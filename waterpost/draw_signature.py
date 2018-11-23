@@ -8,6 +8,8 @@ from drawing_util import render_drawing
 
 
 def draw_signature(artworkData, opts=DefaultOpts):
+    if 'signature' not in artworkData:
+        return
     signature = artworkData['signature']
     turtle = axi.Turtle()
     for line in signature:

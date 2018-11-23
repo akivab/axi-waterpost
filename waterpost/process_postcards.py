@@ -253,7 +253,8 @@ class PostcardProcessor:
                 time.sleep(10)
 
     def send_operator_message(self, title, body):
-        send_message(self.operatorData['token'], title, body)
+        token = db.reference().child('users').child(self.operatorData['userId']).child('token').get()
+        send_message(token, title, body)
 
 
 

@@ -20,6 +20,8 @@ def draw_artwork(artworkData, opts=DefaultOpts):
     :type artworkData: dict
     :type opts: WaterpostOptions
     """
+    if 'artwork' not in artworkData:
+        return
     artwork = artworkData['artwork']
     turtle = axi.Turtle()
     color_breaks = {}

@@ -25,6 +25,8 @@ def get_message_drawing(artworkData, opts=DefaultOpts):
     :type artworkData: dict
     :type opts: WaterpostOptions
     """
+    if 'message' not in artworkData:
+      return None
     message = unidecode(artworkData['message'])
     if len(message) == 0:
         return None

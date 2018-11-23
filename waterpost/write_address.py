@@ -14,6 +14,8 @@ def write_address(artworkData, opts=DefaultOpts):
     :type opts: WaterpostOptions
     """
     opts.dbg('writing address')
+    if 'address' not in artworkData:
+        return
     address = artworkData['address']
     font = axi.Font(axi.FUTURAL, 14)
     y = 2.175
